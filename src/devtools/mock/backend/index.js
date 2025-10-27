@@ -21,15 +21,42 @@ app.listen(PORT, () => {
 });
 
 app.get("/", (_req, res) => {
-  res.send("Backend funcionando correctamente");
+  res.send("Mock Backend funcionando correctamente");
 });
 
-app.post("/api/login", (req, res) => {
+app.post("/api/login", (req, res, next) => {
   const msalToken = req.body.msalToken;
 
-  // console.log("MSAL Token recibido en backend:", msalToken);
-
   setTimeout(() => {
+    /* Simular error 400 Bad Request */
+    // return next({
+    //   status: 400,
+    //   code: "BadRequest",
+    //   message: "Solicitud incorrecta",
+    // });
+
+    /* Simular error 400 Bad Request sin token */
+    // return next({
+    //   status: 400,
+    //   code: "BadRequest",
+    //   message: "Token no proporcionado",
+    // });
+
+    /* Simular error 401 Unauthorized */
+    // return next({
+    //   status: 401,
+    //   code: "Unauthorized",
+    //   message: "No autorizado",
+    // });
+
+    /* Simular error 403 Forbidden */
+    // return next({
+    //   status: 403,
+    //   code: "Forbidden",
+    //   message: "Acceso Prohibido",
+    // });
+
+    /* Successful response */
     res.status(200).json({
       accessToken: msalToken,
       user: {
@@ -38,5 +65,14 @@ app.post("/api/login", (req, res) => {
         name: "John Doe",
       },
     });
-  }, 1500);
+  }, 1500); // Simular retardo de 1.5 segundos
+});
+
+/* Middleware de manejo de errores estructurado */
+app.use((err, _req, res, _next) => {
+  const status = err.status || 500;
+  res.status(status).json({
+    error: err.code || "InternalServerError",
+    message: err.message || "Error interno de servidor",
+  });
 });

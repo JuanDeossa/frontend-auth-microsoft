@@ -1,20 +1,24 @@
 import { useAuth } from "../hooks/useAuth";
 
 export const Dashboard = () => {
-  const { handleLogoutMs, user } = useAuth();
+  const { handleLogoutMs, user, isAuthLoading } = useAuth();
   return (
     <div>
       <h1>Dashboard</h1>
 
-      <pre style={{ textAlign: "left", fontSize: "20px" }}>
-        {JSON.stringify(
-          {
-            ...user,
-          },
-          null,
-          2
-        )}
-      </pre>
+      {isAuthLoading && <p>Cargando información de usuario...</p>}
+
+      {user && (
+        <pre style={{ textAlign: "left", fontSize: "20px" }}>
+          {JSON.stringify(
+            {
+              ...user,
+            },
+            null,
+            2
+          )}
+        </pre>
+      )}
 
       <br />
       <br />

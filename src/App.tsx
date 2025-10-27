@@ -12,6 +12,7 @@ import { Dashboard } from "./components/dashboard";
 import { NotFound } from "./components/notFound";
 import { MsalAuthCallback } from "./components/msalAuthCallback";
 import { AdfsAuthCallback } from "./components/adfsAuthCallback";
+import { Toaster } from "sonner";
 // import { Dashboard } from "./components/dashboard";
 // import { NotFound } from "./components/notFound";
 // import { PrivateLayout } from "./components/privateLayout";
@@ -39,6 +40,7 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
+        <Toaster id="global" expand visibleToasts={9} />
       </AuthProvider>
     </MsalProvider>
   );

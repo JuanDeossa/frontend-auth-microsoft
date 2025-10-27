@@ -1,6 +1,5 @@
 import {
   useContext,
-  useEffect,
   // --- IGNORE ---
 } from "react";
 import { AuthContext } from "../context/authContext";
@@ -10,7 +9,6 @@ import {
   useMsal,
   // --- IGNORE ---
 } from "@azure/msal-react";
-import { loginService } from "../services/loginService";
 import { loginRequest } from "../msalConfig";
 
 export const useAuth = () => {
@@ -22,71 +20,18 @@ export const useAuth = () => {
     throw new Error("useAuth debe usarse dentro de un AuthProvider");
   }
 
-  const {
-    user,
-    accessToken,
-    authError,
-    isAuthLoading,
-    setIsAuthLoading,
-    setUser,
-    setAccessToken,
-    setAuthError,
-  } = context;
+  const { user, accessToken, isAuthLoading, handleLogoutMs } = context;
 
   const handleLoginMs = async () => {
     try {
-      await instance.loginRedirect(loginRequest);
+      await instance.loginPopup({
+        ...loginRequest,
+      });
       console.log("Login successful");
     } catch (err) {
       console.error("Error iniciando sesión: ", err);
     }
   };
-
-  const handleLogoutMs = async () => {
-    try {
-      await instance.logoutRedirect({
-        account: accounts[0],
-        onRedirectNavigate: () => false,
-      });
-      console.log("Logout successful");
-    } catch (err) {
-      console.error("Error cerrando sesión: ", err);
-    }
-  };
-
-  useEffect(() => {
-    if (
-      inProgress === InteractionStatus.None &&
-      isAuthenticated &&
-      accounts.length > 0 &&
-      accounts[0].idToken &&
-      !user
-    ) {
-      setIsAuthLoading(true);
-
-      loginService(accounts[0].idToken)
-        .then((userData) => {
-          setUser(userData.user);
-          setAccessToken(userData.accessToken);
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-          setAuthError("Error en la autenticación");
-        })
-        .finally(() => {
-          setIsAuthLoading(false);
-        });
-    }
-  }, [
-    inProgress,
-    isAuthenticated,
-    accounts,
-    user,
-    setIsAuthLoading,
-    setUser,
-    setAccessToken,
-    setAuthError,
-  ]);
 
   return {
     user,
@@ -95,7 +40,6 @@ export const useAuth = () => {
     inProgress,
     isAuthenticated,
     InteractionStatus,
-    authError,
     isAuthLoading,
     //
     handleLoginMs,
