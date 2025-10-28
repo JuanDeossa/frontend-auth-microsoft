@@ -13,11 +13,6 @@ import { NotFound } from "./components/notFound";
 import { MsalAuthCallback } from "./components/msalAuthCallback";
 import { AdfsAuthCallback } from "./components/adfsAuthCallback";
 import { Toaster } from "sonner";
-// import { Dashboard } from "./components/dashboard";
-// import { NotFound } from "./components/notFound";
-// import { PrivateLayout } from "./components/privateLayout";
-// import { AdfsAuthCallback } from "./components/adfsAuthCallback";
-// import { MsalAuthCallback } from "./components/msalAuthCallback";
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
