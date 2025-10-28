@@ -18,7 +18,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const handleLogoutMs = async () => {
     try {
-      await instance.logoutRedirect({
+      await instance.logout({
         account: accounts[0],
         onRedirectNavigate: () => false,
       });
